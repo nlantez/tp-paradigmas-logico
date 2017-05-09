@@ -97,16 +97,35 @@ hayMateriaQueHabilitaA(Materia,Alguna) :- esCorrelativaDe(Materia,Alguna).
 cursada(nico,matematicaI,8).
 cursada(nico,matematicaII,8).
 cursada(nico,test,2).
+cursada(nico,algoritmosII,7).
 cursada(pole,matematicaI,8).
 rindioLibre(nico,matematicaIII).
 rindioLibre(pole,algoritmosI).
 
+examenFinal(nico, matematicaIII,8).
+examenFinal(nico, algoritmosIII,8).
+examenFinal(pole, algoritmosI,3).
+
+
+/* Punto 3-A */
 materiasCursadas(Alumno,Materias) :- 
     cursada(Alumno,Materias,Nota),
     Nota >= 4.
 
-materiasCursadas(Alumno,Materias) :- 
-    rindioLibre(Alumno,Materias).
+materiasCursadas(Alumno,Materias) :- rindioLibre(Alumno,Materias).
+
+
+/* Punto 3-B */
+materiasAprobadas(Alumno,Materias) :- 
+    examenFinal(Alumno,Materias,Nota),
+    Nota >= 4.
+
+materiasAprobadas(Alumno,Materias) :- 
+    cursada(Alumno,Materias,Nota),
+    esPromocionable(Materias),
+    Nota >= 7.
+
+
 
 
 
