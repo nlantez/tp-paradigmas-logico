@@ -84,7 +84,9 @@ esCorrelativaDe(algoritmosIII,programacionHerramientasModernas).
 esMateriaInicial(Materia) :- esMateria(Materia,_), not(esCorrelativaDe(_,Materia)).
 
 %Punto2B
-hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- esCorrelativaDe(OtraMateria,Materia), hayMateriaNecesariaPara(OtraMateria,MateriaNecesaria).
+hayMateriaNecesariaPara(Materia,Alguna) :- esCorrelativaDe(OtraMateria,Materia), hayMateriaNecesariaPara(OtraMateria,Alguna).
 
-hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- esCorrelativaDe(MateriaNecesaria,Materia).
+hayMateriaNecesariaPara(Materia,Alguna) :- esCorrelativaDe(Alguna,Materia).
 
+%Punto2C
+hayMateriaQueHabilitaA(Materia,Alguna) :- esCorrelativaDe(Materia,Alguna).
