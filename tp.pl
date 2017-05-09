@@ -84,9 +84,29 @@ esCorrelativaDe(algoritmosIII,programacionHerramientasModernas).
 esMateriaInicial(Materia) :- esMateria(Materia,_), not(esCorrelativaDe(_,Materia)).
 
 %Punto2B
-hayMateriaNecesariaPara(Materia,Alguna) :- esCorrelativaDe(OtraMateria,Materia), hayMateriaNecesariaPara(OtraMateria,Alguna).
+hayMateriaNecesariaPara(Materia,Alguna) :- 
+    esCorrelativaDe(OtraMateria,Materia), 
+    hayMateriaNecesariaPara(OtraMateria,Alguna).
 
 hayMateriaNecesariaPara(Materia,Alguna) :- esCorrelativaDe(Alguna,Materia).
 
 %Punto2C
 hayMateriaQueHabilitaA(Materia,Alguna) :- esCorrelativaDe(Materia,Alguna).
+
+/* PUNTO 3 */
+cursada(nico,matematicaI,8).
+cursada(nico,matematicaII,8).
+cursada(nico,test,2).
+cursada(pole,matematicaI,8).
+rindioLibre(nico,matematicaIII).
+rindioLibre(pole,algoritmosI).
+
+materiasCursadas(Alumno,Materias) :- 
+    cursada(Alumno,Materias,Nota),
+    Nota >= 4.
+
+materiasCursadas(Alumno,Materias) :- 
+    rindioLibre(Alumno,Materias).
+
+
+
