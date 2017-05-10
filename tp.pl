@@ -35,7 +35,7 @@ materiaPesada(Materia) :- esMateria(Materia,_), letrasMenorA15(Materia), not(esP
 
 masDe100Horas(Materia) :- esMateria(Materia, Horas), Horas > 100.
 
-letrasMenorA15(Materia) :- string_length(Materia, CantidadLetras), CantidadLetras < 15.
+letrasMenorA15(Materia) :- atom_length(Materia, CantidadLetras), CantidadLetras < 15.
 
 
 %Punto2
@@ -84,14 +84,14 @@ esCorrelativaDe(algoritmosIII,programacionHerramientasModernas).
 esMateriaInicial(Materia) :- esMateria(Materia,_), not(esCorrelativaDe(_,Materia)).
 
 %Punto2B
-hayMateriaNecesariaPara(Materia,Alguna) :- 
+hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- 
     esCorrelativaDe(OtraMateria,Materia), 
-    hayMateriaNecesariaPara(OtraMateria,Alguna).
+    hayMateriaNecesariaPara(OtraMateria,MateriaNecesaria).
 
-hayMateriaNecesariaPara(Materia,Alguna) :- esCorrelativaDe(Alguna,Materia).
+hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- esCorrelativaDe(MateriaNecesaria,Materia).
 
 %Punto2C
-hayMateriaQueHabilitaA(Materia,Alguna) :- esCorrelativaDe(Materia,Alguna).
+hayMateriaQueHabilitaA(Materia,MateriaQueHabilita) :- esCorrelativaDe(Materia,MateriaQueHabilita).
 
 /* PUNTO 3 */
 cursada(nico,matematicaI,8).
@@ -125,6 +125,23 @@ materiasAprobadas(Alumno,Materias) :-
     esPromocionable(Materias),
     Nota >= 7.
 
+
+%Tests
+:- begin_tests(cursada_universitaria).
+test(algoritmosI_materia_pesada,nondet) :-
+	materiaPesada(algoritmosI).
+test(basesDeDatos_materia_pesada,nondet) :-
+	materiaPesada(basesDeDatos).
+test(metodosNumericos_materia_no_pesada,fail) :-
+	materiaPesada(metodosNumericos).
+	
+test(materias_iniciales, set(Materias == [matematicaI, laboratorioDeComputacionI, electricidadYMagnetismo])) :-
+		esMateriaInicial(Materias).
+		
+test(materias_necesarias_para_algoritmosI, set(MateriasNecesarias == [laboratorioDeComputacionI,matematicaI,matematicaII,laboratorioDeComputacionII,sistemasDeProcesamientoDeDatos])) :-
+	hayMateriaNecesariaPara(algoritmosI,MateriasNecesarias).
+	
+:- end_tests(cursada_universitaria).
 
 
 
