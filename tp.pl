@@ -126,6 +126,12 @@ materiasAprobadas(Alumno,Materias) :-
     Nota >= 7.
 
 
+/* Punto 4-A */
+
+debeFinal(Alumno, Materia) :-
+    materiasCursadas(Alumno, Materia),
+    not(materiasAprobadas(Alumno, Materia)).
+
 %Tests
 :- begin_tests(cursada_universitaria).
 test(algoritmosI_materia_pesada,nondet) :-
