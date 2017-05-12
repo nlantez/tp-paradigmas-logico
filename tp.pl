@@ -102,6 +102,7 @@ cursada(pole,matematicaI,8).
 rindioLibre(nico,matematicaIII).
 rindioLibre(pole,algoritmosI).
 
+examenFinal(nico, algoritmosII,9).
 examenFinal(nico, matematicaIII,8).
 examenFinal(nico, algoritmosIII,8).
 examenFinal(pole, algoritmosI,3).
@@ -127,10 +128,14 @@ materiasAprobadas(Alumno,Materias) :-
 
 
 /* Punto 4-A */
-
 debeFinal(Alumno, Materia) :-
     materiasCursadas(Alumno, Materia),
     not(materiasAprobadas(Alumno, Materia)).
+
+
+/* Punto 4-D */
+estaAlDia(Alumno) :-
+    forall(materiasCursadas(Alumno, Materia), not(debeFinal(Alumno, Materia))).
 
 %Tests
 :- begin_tests(cursada_universitaria).
