@@ -101,6 +101,7 @@ cursada(nico,algoritmosII,7).
 cursada(pole,matematicaI,8).
 rindioLibre(nico,matematicaIII).
 rindioLibre(pole,algoritmosI).
+rindioLibre(pole,algoritmosII).
 
 examenFinal(nico, algoritmosII,9).
 examenFinal(nico, matematicaIII,8).
@@ -132,6 +133,12 @@ debeFinal(Alumno, Materia) :-
     materiasCursadas(Alumno, Materia),
     not(materiasAprobadas(Alumno, Materia)).
 
+/* Punto 4-B */
+bloqueaA(Alumno, Materia1, Materia2) :-
+   esCorrelativaDe(Materia1, Materia2),
+   materiasCursadas(Alumno, Materia1),
+   materiasCursadas(Alumno, Materia2),
+   not(materiasAprobadas(Alumno, Materia1)).
 
 /* Punto 4-D */
 estaAlDia(Alumno) :-
