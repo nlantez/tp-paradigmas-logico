@@ -1,33 +1,3 @@
-%Materias
-esMateria(matematicaI,96).
-esMateria(matematicaII,96).
-esMateria(matematicaIII,96).
-esMateria(laboratorioDeComputacionI,128).
-esMateria(laboratorioDeComputacionII,128).
-esMateria(electricidadYMagnetismo,128).
-esMateria(basesDeDatos,128).
-esMateria(sistemasDeProcesamientoDeDatos,128).
-esMateria(metodosNumericos,80).
-esMateria(sistemasOperativos,96).
-esMateria(algoritmosI,160).
-esMateria(algoritmosII,144).
-esMateria(algoritmosIII,160).
-esMateria(redesLocales,128).
-esMateria(seminarioDeProgramacion,64).
-esMateria(paradigmasDeProgramacion,64).
-esMateria(proyectoDeSoftware,128).
-esMateria(programacionHerramientasModernas,160).
-
-%Promocionables
-esPromocionable(matematicaI).
-esPromocionable(matematicaII).
-esPromocionable(laboratorioDeComputacionI).
-esPromocionable(laboratorioDeComputacionII).
-esPromocionable(electricidadYMagnetismo).
-esPromocionable(sistemasDeProcesamientoDeDatos).
-esPromocionable(sistemasOperativos).
-esPromocionable(paradigmasDeProgramacion).
-
 %Punto1
 materiaPesada(Materia) :- masDe100Horas(Materia).
 
@@ -139,45 +109,106 @@ estaAlDia(Alumno) :-
 
 
 /* Punto 5 */
+%Materias
+esMateria(matematicaI,96).
+esMateria(matematicaII,96).
+esMateria(matematicaIII,96).
+esMateria(laboratorioDeComputacionI,128).
+esMateria(laboratorioDeComputacionII,128).
+esMateria(electricidadYMagnetismo,128).
+esMateria(basesDeDatos,128).
+esMateria(sistemasDeProcesamientoDeDatos,128).
+esMateria(metodosNumericos,80).
+esMateria(sistemasOperativos,96).
+esMateria(algoritmosI,160).
+esMateria(algoritmosII,144).
+esMateria(algoritmosIII,160).
+esMateria(redesLocales,128).
+esMateria(seminarioDeProgramacion,64).
+esMateria(paradigmasDeProgramacion,64).
+esMateria(proyectoDeSoftware,128).
+esMateria(programacionHerramientasModernas,160).
+
+%Promocionables
+esPromocionable(matematicaI).
+esPromocionable(matematicaII).
+esPromocionable(laboratorioDeComputacionI).
+esPromocionable(laboratorioDeComputacionII).
+esPromocionable(electricidadYMagnetismo).
+esPromocionable(sistemasDeProcesamientoDeDatos).
+esPromocionable(sistemasOperativos).
+esPromocionable(paradigmasDeProgramacion).
+
+%Cursada
 cursada(pepo, matematicaI, 8).
 cursada(pepo, electricidadYMagnetismo, 8).
 cursada(pepo, laboratorioDeComputacionI, 8).
 cursada(pepo, laboratorioDeComputacionII, 5).
 cursada(pepo, matematicaII, 6).
 cursada(pepo, matematicaIII, 4).
+cursada(pole, electricidadYMagnetismo, 7).
+cursada(pole, matematicaI, 8).
+cursada(pole, laboratorioDeComputacionI, 5).
+cursada(lucas, matematicaI, 10).
+cursada(lucas, laboratorioDeComputacionI, 5).
+cursada(lucas, laboratorioDeComputacionII, 7).
 
+%RindioLibre
 rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
+rindioLibre(lucas,electricidadYMagnetismo).
 
+%Final
 examenFinal(pepo, matematicaII, 4).
 examenFinal(pepo, laboratorioDeComputacionII, 2).
 examenFinal(pepo, sistemasDeProcesamientoDeDatos, 6).
+examenFinal(pole, laboratorioDeComputacionI,9).
 
 
 %Tests
 :- begin_tests(cursada_universitaria).
+
+test(electricidadYMagnetismo_es_materia) :-
+	esMateria(electricidadYMagnetismo,_).
+
+test(paradigmasDeProgramacion_tiene_una_carga_horaria_de_64) :-
+	esMateria(paradigmasDeProgramacion,64).
+	
 test(algoritmosI_materia_pesada,nondet) :-
 	materiaPesada(algoritmosI).
+	
 test(basesDeDatos_materia_pesada,nondet) :-
 	materiaPesada(basesDeDatos).
+	
 test(metodosNumericos_materia_no_pesada,fail) :-
 	materiaPesada(metodosNumericos).
 	
 test(materias_iniciales, set(Materias == [matematicaI, laboratorioDeComputacionI, electricidadYMagnetismo])) :-
 		esMateriaInicial(Materias).
 
-		
 test(materias_necesarias_para_algoritmosI, set(MateriasNecesarias == [laboratorioDeComputacionI,matematicaI,matematicaII,laboratorioDeComputacionII,sistemasDeProcesamientoDeDatos])) :-
 	hayMateriaNecesariaPara(algoritmosI,MateriasNecesarias).
 
-/* Tests punto 5 */
+test(no_hay_materias_necesarias_para_electricidadYMagnetismo,fail) :-
+	hayMateriaNecesariaPara(electricidadYMagnetismo,_).
+
+test(materias_que_habilita_algortimosII, set(MateriasQueHabilita == [algoritmosIII,basesDeDatos,seminarioDeProgramacion])) :-
+	hayMateriaQueHabilitaA(algoritmosII,MateriasQueHabilita).
+
+/* Tests punto 8 */
 test(materias_aprobadas_de_pepo, set(MateriasAprobadas == [laboratorioDeComputacionI, matematicaI, matematicaII, electricidadYMagnetismo, sistemasDeProcesamientoDeDatos])) :-
     materiasAprobadas(pepo, MateriasAprobadas).
 
-test(pepo_no_esta_al_dia) :-
-    not(estaAlDia(pepo)).
+test(pepo_no_esta_al_dia,fail) :-
+    estaAlDia(pepo).
+	
+test(pole_esta_al_dia) :-
+	estaAlDia(pole).
 
-test(pepo_no_perdio_ninguna_promocion) :-
-    not(perdioPromocion(pepo, _)).
+test(pepo_no_perdio_ninguna_promocion,fail) :-
+    perdioPromocion(pepo, _).
+	
+test(lucas_perdio_promocion,nondet) :-
+    perdioPromocion(lucas,_).
     
 test(pepo_posee_matematicaIII_bloqueada_solo_por_laboratorioDeComputacionII, set(MateriasBloqueantes == [laboratorioDeComputacionII])) :-
     bloqueaA(pepo, MateriasBloqueantes, matematicaIII).       	
