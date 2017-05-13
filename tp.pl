@@ -93,22 +93,6 @@ hayMateriaNecesariaPara(Materia,MateriaNecesaria) :- esCorrelativaDe(MateriaNece
 %Punto2C
 hayMateriaQueHabilitaA(Materia,MateriaQueHabilita) :- esCorrelativaDe(Materia,MateriaQueHabilita).
 
-/* PUNTO 3 */
-cursada(nico,matematicaI,8).
-cursada(nico,matematicaII,8).
-cursada(nico,test,2).
-cursada(nico,algoritmosII,7).
-cursada(pole,matematicaI,8).
-rindioLibre(nico,matematicaIII).
-rindioLibre(pole,algoritmosI).
-rindioLibre(pole,algoritmosII).
-
-examenFinal(nico, algoritmosII,9).
-examenFinal(nico, matematicaIII,8).
-examenFinal(nico, algoritmosIII,8).
-examenFinal(pole, algoritmosI,3).
-
-
 /* Punto 3-A */
 materiasCursadas(Alumno,Materias) :- 
     cursada(Alumno,Materias,Nota),
@@ -123,10 +107,12 @@ materiasAprobadas(Alumno,Materias) :-
     Nota >= 4.
 
 materiasAprobadas(Alumno,Materias) :- 
-    cursada(Alumno,Materias,Nota),
-    esPromocionable(Materias),
-    Nota >= 7.
+    cursada(Alumno, Materias, Nota),
+    promocionoMateria(Nota,Materias).
 
+promocionoMateria(Nota, Materia) :-
+    esPromocionable(Materia),
+    Nota >= 7.
 
 /* Punto 4-A */
 debeFinal(Alumno, Materia) :-
@@ -140,9 +126,32 @@ bloqueaA(Alumno, Materia1, Materia2) :-
    materiasCursadas(Alumno, Materia2),
    not(materiasAprobadas(Alumno, Materia1)).
 
+/* Punto 4-C */
+perdioPromocion(Alumno, Materia) :-
+    cursada(Alumno, Materia, Nota),
+    promocionoMateria(Nota, Materia),
+    hayMateriaNecesariaPara(Materia, MateriaNecesaria),
+    debeFinal(Alumno, MateriaNecesaria).
+
 /* Punto 4-D */
 estaAlDia(Alumno) :-
     forall(materiasCursadas(Alumno, Materia), not(debeFinal(Alumno, Materia))).
+
+
+/* Punto 5 */
+cursada(pepo, matematicaI, 8).
+cursada(pepo, electricidadYMagnetismo, 8).
+cursada(pepo, laboratorioDeComputacionI, 8).
+cursada(pepo, laboratorioDeComputacionII, 5).
+cursada(pepo, matematicaII, 6).
+cursada(pepo, matematicaIII, 4).
+
+rindioLibre(pepo, sistemasDeProcesamientoDeDatos).
+
+examenFinal(pepo, matematicaII, 4).
+examenFinal(pepo, laboratorioDeComputacionII, 2).
+examenFinal(pepo, sistemasDeProcesamientoDeDatos, 6).
+
 
 %Tests
 :- begin_tests(cursada_universitaria).
@@ -155,10 +164,24 @@ test(metodosNumericos_materia_no_pesada,fail) :-
 	
 test(materias_iniciales, set(Materias == [matematicaI, laboratorioDeComputacionI, electricidadYMagnetismo])) :-
 		esMateriaInicial(Materias).
+
 		
 test(materias_necesarias_para_algoritmosI, set(MateriasNecesarias == [laboratorioDeComputacionI,matematicaI,matematicaII,laboratorioDeComputacionII,sistemasDeProcesamientoDeDatos])) :-
 	hayMateriaNecesariaPara(algoritmosI,MateriasNecesarias).
-	
+
+/* Tests punto 5 */
+test(materias_aprobadas_de_pepo, set(MateriasAprobadas == [laboratorioDeComputacionI, matematicaI, matematicaII, electricidadYMagnetismo, sistemasDeProcesamientoDeDatos])) :-
+    materiasAprobadas(pepo, MateriasAprobadas).
+
+test(pepo_no_esta_al_dia) :-
+    not(estaAlDia(pepo)).
+
+test(pepo_no_perdio_ninguna_promocion) :-
+    not(perdioPromocion(pepo, _)).
+    
+test(pepo_posee_matematicaIII_bloqueada_solo_por_laboratorioDeComputacionII, set(MateriasBloqueantes == [laboratorioDeComputacionII])) :-
+    bloqueaA(pepo, MateriasBloqueantes, matematicaIII).       	
+
 :- end_tests(cursada_universitaria).
 
 
